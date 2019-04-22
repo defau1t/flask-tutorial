@@ -3,17 +3,17 @@ import functools
 from flask import (
         Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from wekzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from flaskr.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=('GET', 'POST'))
-def registor():
+def register():
         if request.method == 'POST':
                 username = request.form['username']
-                passwrd = request.form['password']
+                password = request.form['password']
                 db = get_db()
                 error = None
 
@@ -29,7 +29,7 @@ def registor():
                 if error is None:
                         db.execute(
                                         'INSERT into user (username, password) VALUES (?, ?)',
-                                        (useranem, generate_password_hash(password))
+                                        (username, generate_password_hash(password))
                         )
                         db.commit()
                         return redirect(url_for('auth.login'))
