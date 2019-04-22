@@ -11,7 +11,7 @@ with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
 
 @pytest.fixture
 def app():
-    db.fd, db.path = tempfile.mkstemp()
+    db_fd, db_path = tempfile.mkstemp()
 
     app = create_app({
         'TESTING': True,
@@ -20,7 +20,7 @@ def app():
 
     with app.app_context():
         init_db()
-        get_db.executescript(_data_sql)
+        get_db().executescript(_data_sql)
 
     yield app
 
@@ -40,7 +40,7 @@ class AuthActions(object):
         self._client = client
 
     def login(self, username='test', password='test'):
-        return self._clientpost(
+        return self._client.post(
                 '/auth/login',
                 data={'username': username, 'password': password}
         )
