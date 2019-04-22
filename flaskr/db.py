@@ -2,7 +2,7 @@ import sqlite3
 
 import click
 from flask import current_app, g
-from flask_cli import with_appcontext
+from flask.cli import with_appcontext
 
 def get_db():
     if 'db' not in g:
@@ -28,7 +28,7 @@ def init_db():
 
 @click.command('init-db')
 @with_appcontext
-def init_db_comand():
+def init_db_command():
     """Clear the existing data and create now tables."""
     init_db()
     click.echo('Initialized the databes.')
